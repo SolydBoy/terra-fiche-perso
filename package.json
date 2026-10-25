@@ -1,0 +1,35 @@
+{
+  "name": "fiche_perso",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "sync:items": "tsx scripts/sync-items.ts",
+    "deploy:proxy": "wrangler deploy --config scripts/notion-proxy/wrangler.toml"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "zustand": "^4.5.4"
+  },
+  "devDependencies": {
+    "@notionhq/client": "^5.9.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "dotenv": "^17.3.1",
+    "postcss": "^8.4.40",
+    "tailwindcss": "^3.4.7",
+    "tsx": "^4.21.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.5",
+    "vite-plugin-singlefile": "^2.3.0",
+    "wrangler": "^3.0.0"
+  }
+}
