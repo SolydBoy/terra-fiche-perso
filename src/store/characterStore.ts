@@ -24,6 +24,8 @@ const DEFAULT_CHARACTER: Character = {
   faim: 145,
   soif: 80,
   stress: 65,
+  reputation: 0,
+  notoriete: 0,
   fv: 2,
   corruption: 0,
   corruptionWeeklyUsed: 0,

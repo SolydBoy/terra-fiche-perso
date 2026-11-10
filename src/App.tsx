@@ -8,6 +8,7 @@ import { InventoryTab } from './components/tabs/InventoryTab'
 import { TechniquesTab } from './components/tabs/TechniquesTab'
 import { MagicTab } from './components/tabs/MagicTab'
 import { FavoritesBlock } from './components/tabs/FavoritesBlock'
+import { ReputationBar } from './components/ui/ReputationBar'
 
 type Tab = 'accueil' | 'personnage' | 'combat' | 'inventaire' | 'techniques' | 'magie'
 
@@ -145,6 +146,21 @@ function IdentityCard() {
             onChange={(e) => updateField('quickNote', e.target.value)}
           />
         </div>
+      </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-4">
+        <ReputationBar
+          label="Réputation"
+          value={character.reputation ?? 0}
+          onUpdate={(v) => updateField('reputation', v)}
+        />
+        <ReputationBar
+          label="Notoriété"
+          value={character.notoriete ?? 0}
+          min={0}
+          max={10}
+          onUpdate={(v) => updateField('notoriete', v)}
+        />
       </div>
     </div>
   )
