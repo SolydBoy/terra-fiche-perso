@@ -23,14 +23,28 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'planif',     label: 'Planif' },
 ]
 
-// Onglets cachés tant que la manip secrète n'a pas été faite
-const SECRET_TABS: Tab[] = ['magie', 'planif']
+// Onglets cachés tant que leur manip secrète n'a pas été faite (chacun la sienne)
+//  - Magie  : taper 5 fois rapidement sur le titre "Fiche Perso"
+//  - Planif : taper 5 fois rapidement sur l'onglet "Combat"
 const SECRET_KEY = 'fiche-perso:secret-unlocked'
+const PLANIF_KEY = 'fiche-perso:planif-unlocked'
 const SECRET_TAPS = 5
 const SECRET_WINDOW_MS = 2000
 
-function readSecretUnlocked() {
-  try { return localStorage.getItem(SECRET_KEY) === '1' } catch { return false }
+function readFlag(key: string) {
+  try { return localStorage.getItem(key) === '1' } catch { return false }
+}
+function writeFlag(key: string, value: boolean) {
+  try { localStorage.setItem(key, value ? '1' : '0') } catch { /* ignore */ }
+}
+
+/** true quand `taps` contient SECRET_TAPS tapes dans la fenêtre de temps (et la vide) */
+function registerTap(taps: { current: number[] }): boolean {
+  const now = Date.now()
+  taps.current = [...taps.current, now].filter(t => now - t < SECRET_WINDOW_MS)
+  if (taps.current.length < SECRET_TAPS) return false
+  taps.current = []
+  return true
 }
 
 function IdentityCard() {
@@ -241,22 +255,32 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('accueil')
   const [statsLocked, setStatsLocked] = useState(false)
   const [highlightInventoryId, setHighlightInventoryId] = useState<string | null>(null)
-  const [secretUnlocked, setSecretUnlocked] = useState(readSecretUnlocked)
+  const [secretUnlocked, setSecretUnlocked] = useState(() => readFlag(SECRET_KEY))
+  const [planifUnlocked, setPlanifUnlocked] = useState(() => readFlag(PLANIF_KEY))
   const secretTaps = useRef<number[]>([])
+  const combatTaps = useRef<number[]>([])
 
-  // Manip secrète : taper 5 fois rapidement sur le titre "Fiche Perso" (bascule)
+  // Manip secrète Magie : taper 5 fois rapidement sur le titre "Fiche Perso" (bascule)
   function handleTitleTap() {
-    const now = Date.now()
-    secretTaps.current = [...secretTaps.current, now].filter(t => now - t < SECRET_WINDOW_MS)
-    if (secretTaps.current.length < SECRET_TAPS) return
-    secretTaps.current = []
+    if (!registerTap(secretTaps)) return
     const next = !secretUnlocked
     setSecretUnlocked(next)
-    try { localStorage.setItem(SECRET_KEY, next ? '1' : '0') } catch { /* ignore */ }
-    if (!next && SECRET_TABS.includes(activeTab)) setActiveTab('accueil')
+    writeFlag(SECRET_KEY, next)
+    if (!next && activeTab === 'magie') setActiveTab('accueil')
   }
 
-  const visibleTabs = TABS.filter(t => secretUnlocked || !SECRET_TABS.includes(t.id))
+  // Manip secrète Planif : taper 5 fois rapidement sur l'onglet "Combat" (bascule)
+  function handleTabClick(tab: Tab) {
+    setActiveTab(tab)
+    if (tab !== 'combat' || !registerTap(combatTaps)) return
+    const next = !planifUnlocked
+    setPlanifUnlocked(next)
+    writeFlag(PLANIF_KEY, next)
+  }
+
+  const isTabUnlocked = (id: Tab) =>
+    id === 'magie' ? secretUnlocked : id === 'planif' ? planifUnlocked : true
+  const visibleTabs = TABS.filter(t => isTabUnlocked(t.id))
 
   useEffect(() => {
     function onNavigate(e: Event) {
@@ -298,7 +322,7 @@ export default function App() {
             {visibleTabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabClick(tab.id)}
                 className={`flex-1 shrink-0 px-2 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap
                             transition-colors ${
                   activeTab === tab.id
@@ -337,7 +361,7 @@ export default function App() {
           {activeTab === 'inventaire' && <InventoryTab highlightId={highlightInventoryId} />}
           {activeTab === 'techniques' && <TechniquesTab />}
           {activeTab === 'magie'      && secretUnlocked && <MagicTab />}
-          {activeTab === 'planif'     && secretUnlocked && <TurnPlannerTab />}
+          {activeTab === 'planif'     && planifUnlocked && <TurnPlannerTab />}
 
         </div>
       </main>
