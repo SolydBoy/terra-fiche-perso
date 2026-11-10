@@ -1,0 +1,387 @@
+{
+  "firstName": "Elsa",
+  "lastName": "Dorvan",
+  "quickNote": "Ancienne éclaireuse de la Garde, tireuse d'appoint. Méfiante, loyale à son escouade.",
+  "constitution": 6,
+  "force": 5,
+  "dexterite": 8,
+  "intelligence": 4,
+  "sagesse": 5,
+  "charisme": 3,
+  "peBase": 6,
+  "hpCurrent": 14,
+  "hpUserAdjust": 0,
+  "peCurrent": 9,
+  "faim": 120,
+  "soif": 90,
+  "stress": 45,
+  "reputation": 3,
+  "notoriete": 4,
+  "fv": 1,
+  "corruption": 18,
+  "corruptionWeeklyUsed": 4,
+  "armure": 0,
+  "equipped": {
+    "tête": "inv-casque",
+    "torse": "inv-combi",
+    "jambes": "inv-pantalon",
+    "pieds": "inv-chaussures",
+    "veste": "inv-poncho",
+    "dos": "inv-sac"
+  },
+  "equippedList": [
+    "inv-armure"
+  ],
+  "objetsMoyens": 0,
+  "objetsMoyensMax": 2,
+  "objetsGrands": 0,
+  "objetsGrandsMax": 1,
+  "objetsTresGrands": 0,
+  "objetsTresGrandsMax": 1,
+  "wounds": [
+    {
+      "id": "w-test-1",
+      "severity": "légère",
+      "description": "Éraflure de balle à l'épaule",
+      "treated": true,
+      "hpCost": 1
+    },
+    {
+      "id": "w-test-2",
+      "severity": "grave",
+      "description": "Morsure profonde au mollet",
+      "treated": false,
+      "hpCost": 3
+    }
+  ],
+  "skills": {
+    "visee": 10,
+    "rechargement": 4,
+    "longue-lame": 6,
+    "main-nue": 2,
+    "perception": 5,
+    "furtivite": 3,
+    "acrobaties": 2,
+    "survie": 5,
+    "orientation": 3,
+    "chasse": 2,
+    "premiers-secours": 4,
+    "mecanique": 2,
+    "entretien-armes-feu": 3,
+    "negociation": 2,
+    "intimidation": 3,
+    "esoterime": 3,
+    "flux-magiques": 6
+  },
+  "traits": [
+    {
+      "id": "t-test-agile",
+      "title": "Agile",
+      "effect": "+2 Esquive, +1 Dextérité"
+    },
+    {
+      "id": "t-test-yeux",
+      "title": "Yeux de chat",
+      "effect": "+2 perception, Don : Vision de nuit"
+    },
+    {
+      "id": "t-test-hemo",
+      "title": "Hémophobe",
+      "effect": "La vue du sang vous fait gagner 10 de stresse"
+    }
+  ],
+  "traitsCaractere": [
+    {
+      "id": "tc-test-1",
+      "title": "Méfiante",
+      "effect": "Ne fait confiance qu'à ceux qui ont saigné à ses côtés."
+    },
+    {
+      "id": "tc-test-2",
+      "title": "Loyale",
+      "effect": "N'abandonne jamais un membre de son escouade."
+    }
+  ],
+  "dons": [
+    "endurant",
+    "vigilant",
+    "tireur"
+  ],
+  "inventory": [
+    {
+      "id": "inv-pistolet",
+      "itemId": "pistolet-de-fortune",
+      "quantity": 1,
+      "notes": "Récupéré sur un pillard, crosse fendue"
+    },
+    {
+      "id": "inv-sabre",
+      "itemId": "sabre-de-dorn",
+      "quantity": 1
+    },
+    {
+      "id": "inv-balles",
+      "itemId": "balles-9mm",
+      "quantity": 6
+    },
+    {
+      "id": "inv-chargeur",
+      "itemId": "chargeur-9mm",
+      "quantity": 2
+    },
+    {
+      "id": "inv-casque",
+      "itemId": "casque-imperial-renforce-de-route",
+      "quantity": 1
+    },
+    {
+      "id": "inv-combi",
+      "itemId": "combinaison-de-maintenance-lourde",
+      "quantity": 1
+    },
+    {
+      "id": "inv-pantalon",
+      "itemId": "pantalon-de-travail-renforce",
+      "quantity": 1
+    },
+    {
+      "id": "inv-chaussures",
+      "itemId": "chaussures-de-randonnee",
+      "quantity": 1
+    },
+    {
+      "id": "inv-poncho",
+      "itemId": "poncho-d-hiver-imperial",
+      "quantity": 1
+    },
+    {
+      "id": "inv-armure",
+      "itemId": "armure-de-cuir-cloute-imperiale",
+      "quantity": 1
+    },
+    {
+      "id": "inv-sac",
+      "itemId": "sac-de-randonnee",
+      "quantity": 1
+    },
+    {
+      "id": "inv-ration",
+      "itemId": "ration-calastar",
+      "quantity": 3
+    },
+    {
+      "id": "inv-desinfectant",
+      "itemId": "desinfectant-t1",
+      "quantity": 2
+    },
+    {
+      "id": "inv-corde",
+      "itemId": "grande-corde-20m",
+      "quantity": 1
+    },
+    {
+      "id": "inv-torche",
+      "itemId": "torche-t2",
+      "quantity": 2
+    },
+    {
+      "id": "inv-or",
+      "itemId": "piece-d-or-imperial",
+      "quantity": 3
+    },
+    {
+      "id": "inv-argent",
+      "itemId": "piece-d-argent-imperial",
+      "quantity": 14
+    },
+    {
+      "id": "inv-bronze",
+      "itemId": "piece-de-bronze-imperial",
+      "quantity": 37
+    }
+  ],
+  "techniquesAcquises": [
+    "coup-d-il",
+    "interception-reflexe",
+    "vigilance",
+    "zone-piegee",
+    "contre-attaque",
+    "lien-de-ciblage",
+    "parade-precise",
+    "riposte-simple",
+    "breche-revelee",
+    "fenetre-ouverte"
+  ],
+  "techniquePeCosts": {},
+  "sortilegesAcquis": [
+    "detection-magique",
+    "sortilege-de-soins",
+    "stase"
+  ],
+  "sortMastery": {
+    "detection-magique": "maîtrisé",
+    "sortilege-de-soins": "débutant"
+  },
+  "sortTypeMastery": {
+    "Basique": "maîtrisé"
+  },
+  "famillesChoisies": [
+    "Tir Réflexe",
+    "Parade-Riposte"
+  ],
+  "favorites": [
+    "s:visee",
+    "s:perception",
+    "s:premiers-secours"
+  ],
+  "notes": "",
+  "notesSections": [
+    {
+      "id": "ns-test-1",
+      "category": "Objectifs",
+      "content": "Retrouver la trace du convoi disparu.\nRembourser la dette envers Marek."
+    }
+  ],
+  "journal": [
+    {
+      "id": "j-test-1",
+      "title": "Session 1 — Le gué de Saulme",
+      "content": "Embuscade au gué. Deux pillards abattus, le troisième s'est enfui vers le nord.",
+      "category": "Campagne"
+    },
+    {
+      "id": "j-test-2",
+      "title": "Session 2 — Les ruines",
+      "content": "Exploration de l'ancienne station. Trouvé une carte du réseau de tunnels.",
+      "category": "Campagne"
+    }
+  ],
+  "quetes": [
+    {
+      "id": "q-test-1",
+      "title": "Retrouver le convoi",
+      "done": false,
+      "notes": "Dernière position connue : route de Calastar.",
+      "pinned": true,
+      "category": "Principale"
+    },
+    {
+      "id": "q-test-2",
+      "title": "Livrer les médicaments à Haven",
+      "done": true,
+      "notes": "",
+      "category": "Secondaire"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "c-test-1",
+      "name": "Marek",
+      "relation": "neutre",
+      "notes": "Marchand d'armes. On lui doit 3 pièces d'or.",
+      "category": "Haven"
+    },
+    {
+      "id": "c-test-2",
+      "name": "Sœur Ilda",
+      "relation": "allié",
+      "notes": "Soigneuse du dispensaire.",
+      "category": "Haven"
+    },
+    {
+      "id": "c-test-3",
+      "name": "Le Borgne",
+      "relation": "ennemi",
+      "notes": "Chef des pillards du gué.",
+      "category": "Pillards"
+    }
+  ],
+  "lieux": [
+    {
+      "id": "l-test-1",
+      "name": "Haven",
+      "type": "ville",
+      "notes": "Refuge fortifié, base de l'escouade.",
+      "category": "Sûr"
+    },
+    {
+      "id": "l-test-2",
+      "name": "Station de pompage",
+      "type": "bâtiment",
+      "notes": "Accès aux tunnels.",
+      "category": "Exploré"
+    }
+  ],
+  "factions": [
+    {
+      "id": "f-test-1",
+      "name": "La Garde impériale",
+      "notes": "Ancien employeur. Rapports tendus.",
+      "category": "Militaire"
+    },
+    {
+      "id": "f-test-2",
+      "name": "Pillards du gué",
+      "notes": "Hostiles.",
+      "category": "Hostile"
+    }
+  ],
+  "turnPlan": {
+    "actions": [
+      {
+        "uid": "p-test-0",
+        "key": "base:move",
+        "kind": "deplacement",
+        "label": "👣 Se déplacer",
+        "cost": 2,
+        "fatigue": 0,
+        "isAttack": false,
+        "corruption": 0,
+        "variableCost": true
+      },
+      {
+        "uid": "p-test-1",
+        "key": "tech:coup-d-il",
+        "kind": "technique",
+        "label": "Coup d'Œil",
+        "cost": 2,
+        "fatigue": 0,
+        "isAttack": false,
+        "corruption": 0
+      },
+      {
+        "uid": "p-test-2",
+        "key": "atk:inv-pistolet:0",
+        "kind": "attaque",
+        "label": "⚔ Pistolet de fortune — Tir simple",
+        "cost": 2,
+        "fatigue": 1,
+        "isAttack": true,
+        "corruption": 0
+      },
+      {
+        "uid": "p-test-3",
+        "key": "atk:inv-pistolet:0",
+        "kind": "attaque",
+        "label": "⚔ Pistolet de fortune — Tir simple",
+        "cost": 2,
+        "fatigue": 1,
+        "isAttack": true,
+        "corruption": 0
+      }
+    ],
+    "customActions": [
+      {
+        "key": "perso:test-couvert",
+        "label": "Se mettre à couvert",
+        "cost": 1
+      },
+      {
+        "key": "perso:test-recharger",
+        "label": "Recharger",
+        "cost": 1
+      }
+    ],
+    "peStartOverride": null
+  }
+}
