@@ -7,10 +7,11 @@ import { CombatTab } from './components/tabs/CombatTab'
 import { InventoryTab } from './components/tabs/InventoryTab'
 import { TechniquesTab } from './components/tabs/TechniquesTab'
 import { MagicTab } from './components/tabs/MagicTab'
+import { TurnPlannerTab } from './components/tabs/TurnPlannerTab'
 import { FavoritesBlock } from './components/tabs/FavoritesBlock'
 import { ReputationBar } from './components/ui/ReputationBar'
 
-type Tab = 'accueil' | 'personnage' | 'combat' | 'inventaire' | 'techniques' | 'magie'
+type Tab = 'accueil' | 'personnage' | 'combat' | 'inventaire' | 'techniques' | 'magie' | 'planif'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'accueil',    label: 'Accueil' },
@@ -19,10 +20,11 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'inventaire', label: 'Inventaire' },
   { id: 'techniques', label: 'Techniques' },
   { id: 'magie',      label: 'Magie' },
+  { id: 'planif',     label: 'Planif' },
 ]
 
 // Onglets cachés tant que la manip secrète n'a pas été faite
-const SECRET_TABS: Tab[] = ['magie']
+const SECRET_TABS: Tab[] = ['magie', 'planif']
 const SECRET_KEY = 'fiche-perso:secret-unlocked'
 const SECRET_TAPS = 5
 const SECRET_WINDOW_MS = 2000
@@ -292,12 +294,12 @@ export default function App() {
           <IdentityCard />
 
           {/* Onglets — entre identité et contenu */}
-          <nav className="flex gap-1 bg-[#1a1a1a] border border-zinc-800 rounded-xl p-1.5">
+          <nav className="flex gap-1 bg-[#1a1a1a] border border-zinc-800 rounded-xl p-1.5 overflow-x-auto [scrollbar-width:none]">
             {visibleTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap
+                className={`flex-1 shrink-0 px-2 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap
                             transition-colors ${
                   activeTab === tab.id
                     ? 'bg-orange-500 text-black'
@@ -335,6 +337,7 @@ export default function App() {
           {activeTab === 'inventaire' && <InventoryTab highlightId={highlightInventoryId} />}
           {activeTab === 'techniques' && <TechniquesTab />}
           {activeTab === 'magie'      && secretUnlocked && <MagicTab />}
+          {activeTab === 'planif'     && secretUnlocked && <TurnPlannerTab />}
 
         </div>
       </main>

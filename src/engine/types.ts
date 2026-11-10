@@ -105,6 +105,7 @@ export interface Character {
   stress: number      // 0–200
   reputation?: number // −10 → +10
   notoriete?: number  // 0 → 10
+  turnPlan?: import('./turnPlanner').TurnPlanState  // plan du prochain tour (onglet caché)
   fv: number          // fatigue de voyage (0 → constitution)
   corruption: number            // 0–100, cumul permanent
   corruptionWeeklyUsed: number  // points de corruption dépensés cette semaine (remis à 0 manuellement)
