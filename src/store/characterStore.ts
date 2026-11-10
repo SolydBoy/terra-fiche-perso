@@ -7,6 +7,14 @@ import { calcHpBase, calcPeMax, calcPeRecovery } from '../engine/stats'
 import { computeAllBonuses } from '../engine/traits'
 import { calcCorruptionCapacity } from '../engine/magic'
 
+const STRESS_MAX = 200
+
+/** Ajoute au stress les PV perdus via une blessure (1 PV = 1 stress). Ignore les valeurs ≤ 0. */
+function addDamageStress(stress: number, damage: number): number {
+  if (damage <= 0) return stress
+  return Math.min(STRESS_MAX, stress + damage)
+}
+
 const DEFAULT_CHARACTER: Character = {
   firstName: 'John',
   lastName: 'Miller',
@@ -233,6 +241,8 @@ export const useCharacterStore = create<CharacterStore>()(
           }
           // Réduire hpCurrent du coût de la nouvelle blessure
           updated.hpCurrent = Math.max(0, s.character.hpCurrent - hpCost)
+          // Les dégâts reçus s'ajoutent au stress
+          updated.stress = addDamageStress(s.character.stress, hpCost)
           return { character: updated }
         }),
 
@@ -291,6 +301,8 @@ export const useCharacterStore = create<CharacterStore>()(
           )
           const updated: Character = { ...s.character, wounds: updatedWounds }
           updated.hpCurrent = Math.max(0, clampHp({ ...updated, hpCurrent: s.character.hpCurrent - delta }))
+          // Dégâts supplémentaires sur une blessure existante → stress (une guérison ne retire rien)
+          updated.stress = addDamageStress(s.character.stress, delta)
           return { character: updated }
         }),
 
