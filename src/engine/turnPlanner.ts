@@ -4,9 +4,9 @@
 //  - Toute action avec de la fatigue l'ajoute au cumul du tour (après son propre coût)
 //  - Fin de tour : PE + récupération (plafonné au max) ; si PE négatifs → récupération / 2
 
-export type PlanActionKind = 'attaque' | 'technique' | 'speciale' | 'sort' | 'deplacement' | 'perso'
+export type PlanActionKind = 'attaque' | 'technique' | 'speciale' | 'sort' | 'competence' | 'deplacement' | 'perso'
 
-const KINDS: PlanActionKind[] = ['attaque', 'technique', 'speciale', 'sort', 'deplacement', 'perso']
+const KINDS: PlanActionKind[] = ['attaque', 'technique', 'speciale', 'sort', 'competence', 'deplacement', 'perso']
 
 /** Action disponible dans la palette (et copiée dans le plan) */
 export interface PlanActionTemplate {

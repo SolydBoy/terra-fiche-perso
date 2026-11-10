@@ -31,6 +31,7 @@ const KIND_STYLE: Record<PlanActionKind, string> = {
   speciale:  'border-purple-800/70 text-purple-300 bg-purple-950/40',
   sort:      'border-indigo-800/70 text-indigo-300 bg-indigo-950/40',
   deplacement: 'border-amber-800/70 text-amber-200 bg-amber-950/30',
+  competence:  'border-teal-800/70 text-teal-200 bg-teal-950/40',
   perso:     'border-emerald-800/70 text-emerald-300 bg-emerald-950/40',
 }
 
@@ -39,6 +40,11 @@ function newUid() {
 }
 
 // ─── Actions disponibles ───────────────────────────────────────────────────────
+
+/** Jet de compétence en combat : 1 PE */
+const SKILL_ACTION_COST = 1
+/** Compétences déjà couvertes ailleurs : attaques (étiquettes d'armes) et Flux Magiques (sorts) */
+const ATTACK_SKILL_IDS = new Set(['hache', 'longue-masse', 'petite-masse', 'longue-lame', 'petite-lame', 'lance', 'main-nue', 'visee', 'flux-magiques'])
 
 /** Se déplacer : 1 PE minimum, coût réglable sur chaque étiquette du plan */
 const MOVE_ACTION: PlanActionTemplate = {
@@ -113,6 +119,20 @@ function buildPalette(
       cost: peCosts[t.id] ?? t.peCost ?? 0, fatigue: t.fatigueCost ?? 0, isAttack: true, corruption: 0,
     }))
   if (speciales.length) groups.push({ title: 'Attaques spéciales', actions: speciales })
+
+  // Compétences (1 PE) : médicales toujours proposées, les autres dès le niveau 1
+  const skillActions = [...SKILLS]
+    .filter((sk) => !ATTACK_SKILL_IDS.has(sk.id))
+    .map((sk) => ({ sk, lvl: ((character.skills ?? {})[sk.id] ?? 0) + (skillBonuses[sk.id] ?? 0) }))
+    .filter(({ sk, lvl }) => sk.category === 'Médical' || lvl > 0)
+    .sort((a, b) => Number(b.sk.category === 'Médical') - Number(a.sk.category === 'Médical'))
+    .map(({ sk, lvl }): PlanActionTemplate => ({
+      key: `skill:${sk.id}`, kind: 'competence',
+      label: `${sk.category === 'Médical' ? '✚' : '◆'} ${sk.name}`,
+      cost: SKILL_ACTION_COST, fatigue: 0, isAttack: false, corruption: 0,
+      rolls: [{ label: `${sk.name} (${lvl})`, command: `/gr 1d20+${lvl} ${sk.name}` }],
+    }))
+  if (skillActions.length) groups.push({ title: 'Compétences · 1 PE', actions: skillActions })
 
   // Sortilèges (une étiquette par puissance)
   const spellIds = character.sortilegesAcquis ?? []
@@ -243,6 +263,7 @@ const KIND_BAR: Record<PlanActionKind, string> = {
   speciale:  'bg-purple-600',
   sort:      'bg-indigo-500',
   deplacement: 'bg-amber-600',
+  competence:  'bg-teal-600',
   perso:     'bg-emerald-600',
 }
 
