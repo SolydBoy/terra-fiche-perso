@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface Props {
   label: string
@@ -36,7 +36,6 @@ export function ReputationBar({ label, value, onUpdate, min = -10, max = 10 }: P
   const trackRef = useRef<HTMLDivElement>(null)
   const v = Math.min(max, Math.max(min, value))
   const t = (v - min) / (max - min)          // 0 → 1
-  const color = lerpColor(t)
   const gold  = Math.max(0, (t - 0.5) * 2)    // 0 → 1 sur la moitié haute
   const dark  = Math.max(0, (0.5 - t) * 2)    // 0 → 1 sur la moitié basse
 
@@ -58,20 +57,47 @@ export function ReputationBar({ label, value, onUpdate, min = -10, max = 10 }: P
     set(min + ratio * (max - min))
   }
 
-  // Remplissage : dégradé de la couleur courante, plus lumineux vers l'extrémité
-  const tip  = gold > 0 ? lerpColor(Math.min(1, t + 0.15)) : color
-  const base = gold > 0 ? lerpColor(Math.max(0.5, t - 0.25)) : color
-  const fillStyle: React.CSSProperties = {
-    width: `${fillPct}%`,
-    ...(v >= origin ? { left: `${originPct}%` } : { right: `${100 - originPct}%` }),
-    background: v >= origin
-      ? `linear-gradient(90deg, ${rgb(base)}, ${rgb(tip)})`
-      : `linear-gradient(270deg, ${rgb(lerpColor(0.5))} -60%, ${rgb(color)})`,
-    boxShadow: gold > 0
-      ? `0 0 ${4 + gold * 10}px ${rgb([255, 190, 40], 0.25 + gold * 0.45)}`
-      : dark > 0
-        ? `inset 0 0 4px rgba(0,0,0,0.9), 0 0 ${dark * 6}px rgba(0,0,0,0.9)`
-        : 'none',
+  // Deux remplissages, chacun accroché à l'origine : un vers la gauche (sous l'origine),
+  // un vers la droite. Quand la valeur traverse l'origine, l'un se résorbe vers 0
+  // puis l'autre en repart — au lieu de sauter d'un bord à l'autre.
+  const prevRef = useRef(v)
+  const lastLow  = useRef(v < origin ? v : min)
+  const lastHigh = useRef(v > origin ? v : max)
+  if (v < origin) lastLow.current = v
+  if (v > origin) lastHigh.current = v
+  useEffect(() => { prevRef.current = v }, [v])
+
+  const prev    = prevRef.current
+  const crossed = (prev < origin && v > origin) || (prev > origin && v < origin)
+  const STEP_MS = crossed ? 200 : 300
+
+  function fillStyle(side: 'low' | 'high'): React.CSSProperties {
+    const active = side === 'low' ? v < origin : v > origin
+    // Couleur : celle de la valeur actuelle, ou de la dernière valeur de ce côté pendant qu'il se résorbe
+    const sv = active ? v : side === 'low' ? lastLow.current : lastHigh.current
+    const st = (sv - min) / (max - min)
+    const sGold = Math.max(0, (st - 0.5) * 2)
+    const sDark = Math.max(0, (0.5 - st) * 2)
+    const c     = lerpColor(st)
+    const tip   = sGold > 0 ? lerpColor(Math.min(1, st + 0.15)) : c
+    const base  = sGold > 0 ? lerpColor(Math.max(0.5, st - 0.25)) : c
+    return {
+      width: active ? `${fillPct}%` : '0%',
+      ...(side === 'high' ? { left: `${originPct}%` } : { right: `${100 - originPct}%` }),
+      background: sGold > 0
+        ? `linear-gradient(90deg, ${rgb(base)}, ${rgb(tip)})`
+        : side === 'low'
+          ? `linear-gradient(270deg, ${rgb(lerpColor(0.5))} -60%, ${rgb(c)})`
+          : rgb(c),
+      boxShadow: sGold > 0
+        ? `0 0 ${4 + sGold * 10}px ${rgb([255, 190, 40], 0.25 + sGold * 0.45)}`
+        : sDark > 0
+          ? `inset 0 0 4px rgba(0,0,0,0.9), 0 0 ${sDark * 6}px rgba(0,0,0,0.9)`
+          : 'none',
+      transitionDuration: `${STEP_MS}ms`,
+      // Le côté qui grandit attend que l'autre soit revenu à 0
+      transitionDelay: crossed && active ? `${STEP_MS}ms` : '0ms',
+    }
   }
 
   const valueColor = gold > 0
@@ -125,11 +151,9 @@ export function ReputationBar({ label, value, onUpdate, min = -10, max = 10 }: P
             style={{ left: `${originPct}%` }}
           />
         )}
-        {/* Remplissage */}
-        <div
-          className="absolute top-0 bottom-0 rounded-full transition-all duration-300"
-          style={fillStyle}
-        />
+        {/* Remplissages (sous / au-dessus de l'origine) */}
+        <div className="absolute top-0 bottom-0 rounded-full transition-all" style={fillStyle('low')} />
+        <div className="absolute top-0 bottom-0 rounded-full transition-all" style={fillStyle('high')} />
       </div>
     </div>
   )
